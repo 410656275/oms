@@ -1,0 +1,13 @@
+/* -- Plugin turbolinks */
+/*
+.turbolinks-progress-bar {
+  height: 5px;
+  background-color: green;
+}
+.turbolinks-progress-bar {
+  visibility: hidden;
+}
+*/
+.turbolinks-progress-bar {
+  height: 3px;
+}

@@ -1,0 +1,91 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL</title>
+<link rel="icon" href="/static/common/favicon.ico">
+
+{% include 'common/static.html' %}
+
+<style>
+.my-sign-in-body {
+  background-color: #F9F9F9;
+}
+
+.my-sign-in-div {
+  padding: 150px 0;
+}
+
+.my-sign-in-form {
+  max-width: 330px;
+  padding: 20px;
+  margin: 0 auto;
+  background-color: #FFF;
+  border: 1px solid #D8DEE2;
+  border-collapse: collapse;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-style: hidden;
+  box-shadow: 0 0 0 1px #D8DEE2;
+}
+</style>
+</head>
+
+<body class="my-sign-in-body">
+<div class="container-fluid my-sign-in-div">
+  <form class="form-horizontalx my-sign-in-form" id="form">
+    <div class="form-group">
+      <label class="control-label">{% trans "Username" %}</label>
+      <input type="text" class="form-control" name="username" autofocus>
+    </div>
+    <div class="form-group">
+      <label class="control-label">{% trans "Password" %}</label>
+      <input type="password" class="form-control" name="password">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-block">{% trans "Sign in" %}</button>
+    </div>
+  </form>
+</div>
+
+<script>
+$('#form').submit(function(e) {
+  e.preventDefault();
+
+  if ($('[name="username"]').val().trim() === '') {
+    $('[name="username"]').focus();
+    toastr.info('{% trans "Username can not be null" %}', null, {timeOut: 3000});
+    return;
+  }
+
+  if ($('[name="password"]').val().trim() === '') {
+    $('[name="password"]').focus();
+    toastr.info('{% trans "Password can not be null" %}', null, {timeOut: 3000});
+    return;
+  }
+
+  NProgress.start();
+
+  $.ajax({
+    url: '/sign_in',
+    type: 'POST',
+    data: $('#form').serialize(),
+    success: function(data) {
+      NProgress.done();
+      // Turbolinks.visit('/');
+      window.location.href = '/';
+    },
+    error: function(xhr) {
+      NProgress.done();
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    },
+  });
+});
+</script>
+</body>
+</html>

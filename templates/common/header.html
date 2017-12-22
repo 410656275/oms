@@ -1,0 +1,119 @@
+{% load i18n %}
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" class="navbar-brand">OMS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li {% if '/sql/' in request.get_full_path %}class="active"{% endif %}>
+          <a href="/sql/index.html" class="fa fa-database">&nbsp;SQL</a>
+        </li>
+        <!-- <li {% if '/test/' in request.get_full_path %}class="active"{% endif %}> -->
+        <!--   <a href="/test/index.html" class="fa fa-files-o" data-turbolinks="false">&nbsp;TEST</a> -->
+        <!-- </li> -->
+        <!--
+        <li>
+          <a href="/test" class="fa fa-database">&nbsp;TEST</a>
+        </li>
+        -->
+      </ul>
+      {% get_current_language as LANGUAGE_CODE %}
+      {% get_available_languages as LANGUAGES %}
+      {% get_language_info_list for LANGUAGES as languages %}
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button">
+            {% for language in languages %}{% if language.code == LANGUAGE_CODE %}
+            <span class="fa fa-globe">&nbsp;{{ language.name_local }}</span>&nbsp;<span class="caret"></span>
+            {% endif %}{% endfor %}
+          </a>
+          <ul class="dropdown-menu">
+            {% for language in languages %}{% if language.code != LANGUAGE_CODE %}
+            <li><a href="/set_language?language={{ language.code }}" data-turbolinks="false">{{ language.name_local }}</a></li>
+            {% endif %}{% endfor %}
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button">
+            <span class="fa fa-user-o">&nbsp;{{ request.session.user_display_name }}</span>&nbsp;<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:;" onclick="change_password();">{% trans 'Change Password' %}</a></li>
+            <li><a href="javascript:;" onclick="get_user_list();">{% trans 'Team Members' %}</a></li>
+          </ul>
+        </li>
+        <li><a href="/sign_out.html" class="fa fa-sign-out">&nbsp;{% trans 'Sign Out' %}</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="fixed-header"></div>
+
+<div class="modal" id="myModalx" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <div>&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function change_password() {
+  NProgress.start();
+  var url = '/for_change_password.html';
+  $('#myModalx').find('.modal-dialog').removeClass('my-modal-dialog');
+  $('#myModalx').find('.modal-title').text('{% trans "Change Password" %}');
+  $('#myModalx').find('.modal-body').load(url, function(response, status, xhr) {
+    NProgress.done();
+    if (xhr.status === 200) {
+      $('#myModalx').modal({
+        backdrop: true,
+        keyboard: true,
+        show: true,
+      });
+      $('#focus').focus();
+    } else {
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    }
+  });
+}
+
+
+function get_user_list() {
+  NProgress.start();
+  var url = '/get_user_list.html';
+  $('#myModalx').find('.modal-dialog').addClass('my-modal-dialog');
+  $('#myModalx').find('.modal-title').text('{% trans "Team Members" %}');
+  $('#myModalx').find('.modal-body').load(url, function(response, status, xhr) {
+    NProgress.done();
+    if (xhr.status === 200) {
+      $('#myModalx').modal({
+        backdrop: true,
+        keyboard: true,
+        show: true,
+      });
+      // autosize($('textarea'));
+      // autosize(document.querySelector('textarea'));
+      autosize(document.querySelectorAll('textarea'));
+    } else {
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    }
+  });
+}
+</script>

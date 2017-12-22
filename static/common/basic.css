@@ -1,0 +1,37 @@
+/* -- Custom */
+.my-required {
+  color: #D9534F;
+}
+
+.my-disabled {
+  color: #AAA;
+}
+
+
+/*
+$('#myModal').find('.modal-dialog').css({
+  'width': 'auto',
+  'margin-left': '10px',
+  'margin-right': '10px',
+});
+*/
+.my-modal-dialog {
+  width: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+/*
+.dropdown, .dropup {
+  position: relative;
+}
+*/
+.my-dropdown, .dropup {
+  position: relative;
+}
+/*
+.my-dropdown:hover .dropdown-menu {
+  display: block;
+}
+*/

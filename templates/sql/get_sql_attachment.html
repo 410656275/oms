@@ -1,0 +1,51 @@
+{% load i18n %}
+
+<style>
+/*
+pre {
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+*/
+pre {
+  padding: 0;
+  border: 1px solid #EEE;
+}
+
+/*
+.hljs {
+  padding: 0.5em;
+}
+*/
+.hljs {
+  padding: 0 1em;
+}
+</style>
+
+<div class="container-fluid">
+<div>
+<a href="/static/{{ attachment.file_path }}" target="_blank" class="fa fa-download" style="margin-bottom: 10px;">
+  &nbsp;{{ attachment.file_name }} ({{ attachment.file_size }})
+</a>
+</div>
+
+<pre><code class="sql hljs">
+{{ attachment.content }}
+</code></pre>
+</div>
+
+<script>
+/* https://stackoverflow.com/questions/31446974/highlight-js-and-rails-page-needs-refresh-turbolinks-again */
+// hljs.initHighlightingOnLoad();
+hljs.initHighlighting.called = false;
+hljs.initHighlighting();
+</script>

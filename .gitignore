@@ -1,0 +1,31 @@
+!*.gitkeep
+
+
+*.log
+*.log.*
+
+
+# PYTHONOPTIMIZE=1
+*.py[co]
+
+
+# Python 3
+__pycache__/
+
+
+# Django ORM
+# Flask-SQLAlchemy
+migrations/
+
+
+# SQLite
+db.sqlite3
+
+
+# Celery
+celerybeat.pid
+celerybeat-schedule
+
+
+# My
+rsync.sh

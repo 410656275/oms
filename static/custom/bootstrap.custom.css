@@ -1,0 +1,114 @@
+.fixed-header {
+  margin-bottom: 70px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.table > thead > tr > th {
+  border-bottom: 1px solid #ddd;
+  font-weight: normal;
+  color: #008080;
+  text-align: center;
+}
+
+label {
+  font-weight: normal !important;
+}
+
+/*
+.pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+*/
+.pagination {
+  margin-top: 0px;
+}
+
+
+/*
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+*/
+.alert {
+  padding: 6px 12px;
+}
+
+
+/*
+.breadcrumb {
+  padding: 8px 15px;
+  margin-bottom: 20px;
+  list-style: none;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+*/
+.breadcrumb {
+  padding: 0;
+  background-color: #FFF;
+}
+
+
+/*
+.popover-content {
+  padding: 9px 14px;
+}
+*/
+.popover-content {
+  padding: 7px;
+}
+
+
+/*
+http://getbootstrap.com/css/#less-variables-typography
+.popover {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: left;
+  text-align: start;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  white-space: normal;
+}
+*/
+.popover {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  max-width: 100%;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+

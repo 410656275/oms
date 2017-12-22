@@ -1,0 +1,514 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="turbolinks-cache-control" content="no-preview">
+<title>SQL</title>
+<link rel="icon" href="/static/common/favicon.ico">
+
+{% include 'common/static.html' %}
+</head>
+
+<body>
+{% include 'common/header.html' %}
+
+<div class="container-fluid">
+  <div style="margin: 0 0 20px 0; float: right;">
+    <button type="button" class="btn btn-primary" onclick="for_add_sql();"><i class="fa fa-plus">&nbsp;</i>{% trans "New SQL" %}</button>
+  </div>
+
+  <div style="margin: 0 15px 20px 0; float: right; width: 250px;">
+    <div class="input-group">
+      <input type="text" class="form-control" id="keyword" value="{{ keyword }}">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="button" onclick="get_sql_list();"><i class="fa fa-search"></i></button>
+        {# <button class="btn btn-primary" type="button" onclick="get_sql_list();"><i class="fa fa-times"></i></button> #}
+      </span>
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+
+  <div class="table-responsive">
+    <table id="myTable" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>{% trans "Flag" %}</th>
+          <th>{% trans "Subject" %}</th>
+          <th>{% trans "Creator" %}</th>
+          <th>{% trans "Database" %}</th>
+          <th>{% trans "Created At" %}</th>
+          <th>{% trans "Finished At" %}</th>
+          <th>{% trans "Status" %}</th>
+          <th>{% trans "Operation" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sql in sqls %}
+        <tr>
+          <td style="text-align: center;">{{ sql.id }}</td>
+          <td style="text-align: center;">
+            {% if sql.is_starred == 0 %}
+              {% if sql.user_perm.has_star_perm == 1 %}
+            <a href="javascript:;" onclick="star_sql({{ sql.id }});"><i class="fa fa-star-o"></i></a>
+              {% else %}
+            <i class="fa fa-star-o"></i>
+              {% endif %}
+            {% else %}
+              {% if sql.user_perm.has_unstar_perm == 1 %}
+            <a href="javascript:;" onclick="unstar_sql({{ sql.id }});"><i class="fa fa-star"></i></a>
+              {% else %}
+            <i class="fa fa-star"></i>
+              {% endif %}
+            {% endif %}
+          </td>
+          <td>
+            {% if sql.subject|length <= 20 %}
+            <a href="javascript:;" onclick="get_sql({{ sql.id }});"
+               {% if sql.is_deleted %}style="text-decoration: line-through;"{% endif %}>
+              {% if sql.attachment_count > 0 %}<span class="glyphicon glyphicon-paperclip"></span>&nbsp;{% endif %}
+              {{ sql.subject }}
+            </a>
+            {% else %}
+            <a href="javascript:;" onclick="get_sql({{ sql.id }});"
+               {% if sql.is_deleted %}style="text-decoration: line-through;"{% endif %}
+               data-container="body" data-toggle="popover" data-placement="right" data-content="{{ sql.subject }}">
+              {% if sql.attachment_count > 0 %}<span class="glyphicon glyphicon-paperclip"></span>&nbsp;{% endif %}
+              {{ sql.subject|slice:':20' }}..
+            </a>
+            {% endif %}
+          </td>
+          <td style="text-align: center;">{{ sql.creator_name }}</td>
+          <td style="text-align: center;">{{ sql.databases|default:'' }}</td>
+          <td style="text-align: center;">{{ sql.created_at }}</td>
+          <td style="text-align: center;">{{ sql.finished_at|default:'' }}</td>
+          <td style="text-align: center;">
+            {% if sql.status == 0 %}
+            <span style="color:#E06043">{% trans "Created" %}</span>
+            {% elif sql.status == 1 %}
+            <span style="color:#E06043">{% trans "Delivered" %}</span>
+            {% elif sql.status == 2 %}
+            <span style="color:#E06043">{% trans "Updated" %}</span>
+            {% elif sql.status == 3 %}
+            <span style="color:#E06043">{% trans "Excuting" %}</span>
+            {% elif sql.status == 4 %}
+            <span style="color:#095720">{% trans "Finished" %}</span>
+            {% elif sql.status == 5 %}
+            <span style="color:#095720">{% trans "Archived" %}</span>
+            {% elif sql.status == 6 %}
+            <span style="color:#095720">{% trans "Deleted" %}</span>
+            {% endif %}
+          </td>
+          <td style="text-align: center;">
+            <a href="javascript:;" onclick="get_sql({{ sql.id }});">{% trans "Show" %}</a>
+            &nbsp;
+            {% if sql.user_perm.has_edit_perm == 1 %}
+            <a href="javascript:;" onclick="for_update_sql({{ sql.id }});">{% trans "Edit" %}</a>
+            {% else %}
+            <span class="my-disabled">{% trans "Edit" %}</span>
+            {% endif %}
+            {% if request.session.user_is_superuser %}
+            &nbsp;
+            {% if sql.user_perm.has_accept_perm == 1 %}
+            <a href="javascript:;" onclick="accept_sql({{ sql.id }}, '{{ sql.subject }}');">{% trans "Accept" %}</a>
+            {% else %}
+            <span class="my-disabled">{% trans "Accept" %}</span>
+            {% endif %}
+            &nbsp;
+            {% if sql.user_perm.has_reply_perm == 1 %}
+            <a href="javascript:;" onclick="for_reply_sql({{ sql.id }});">{% trans "Reply" %}</a>
+            {% else %}
+            <span class="my-disabled">{% trans "Reply" %}</span>
+            {% endif %}
+            &nbsp;
+            <span class="my-dropdown">
+              <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                {% trans "More" %}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right" style="min-width: 0px; margin-top: 9px;">
+                {% if sql.user_perm.has_delete_perm == 1 %}
+                <li><a href="javascript:;" onclick="delete_sql({{ sql.id }}, '{{ sql.subject }}');">{% trans "Delete" %}</a></li>
+                {% else %}
+                <li><a href="javascript:;"><span class="my-disabled">{% trans "Delete" %}</span></a></li>
+                {% endif %}
+                {% if sql.user_perm.has_archive_perm == 1 %}
+                <li><a href="javascript:;" onclick="archive_sql({{ sql.id }}, '{{ sql.subject }}');">{% trans "Archive" %}</a></li>
+                {% else %}
+                <li><a href="javascript:;"><span class="my-disabled">{% trans "Archive" %}</span></a></li>
+                {% endif %}
+              </ul>
+            </span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div style="float: right;">
+    <nav>
+      <ul class="pagination">
+        {% if not pg.is_first %}
+        {# <li><a href="?page={{ pg.first }}"><span>&laquo;</span></a></li> #}
+        <li><a href="javascript:;" onclick="get_sql_list({{ pg.first }})"><span>&laquo;</span></a></li>
+        {% else %}
+        <li class="disabled"><a href="javascript:;"><span>&laquo;</span></a></li>
+        {% endif %}
+
+        {% if pg.has_prev %}
+        {# <li><a href="?page={{ pg.prev }}"><span>&lsaquo;</span></a></li> #}
+        <li><a href="javascript:;" onclick="get_sql_list({{ pg.prev }})"><span>&lsaquo;</span></a></li>
+        {% else %}
+        <li class="disabled"><a href="javascript:;"><span>&lsaquo;</span></a></li>
+        {% endif %}
+
+        {% for x in pg.pages %}
+          {% if x != pg.page %}
+        {# <li><a href="?page={{ x }}">{{ x }}</a></li> #}
+        <li><a href="javascript:;" onclick="get_sql_list({{ x }})">{{ x }}</a></li>
+          {% else %}
+        <li class="active"><a href="javascript:;">{{ x }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if pg.has_next %}
+        {# <li><a href="?page={{ pg.next }}"><span>&rsaquo;</span></a></li> #}
+        <li><a href="javascript:;" onclick="get_sql_list({{ pg.next }})"><span>&rsaquo;</span></a></li>
+        {% else %}
+        <li class="disabled"><a href="javascript:;"><span>&rsaquo;</span></a></li>
+        {% endif %}
+
+        {% if not pg.is_last %}
+        {# <li><a href="?page={{ pg.last }}"><span>&raquo;</span></a></li> #}
+        <li><a href="javascript:;" onclick="get_sql_list({{ pg.last }})"><span>&raquo;</span></a></li>
+        {% else %}
+        <li class="disabled"><a href="javascript:;"><span>&raquo;</span></a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  <div style="clear:both"></div>
+</div>
+
+<div class="modal" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <div>&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="myModal2" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <div>&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#keyword').on('keypress', function(event) {
+  if (event.which === 13) {
+    get_sql_list();
+  }
+});
+
+
+function get_sql_list(page) {
+  var url = '/sql/index.html';
+
+  var keyword = $('#keyword').val().trim();
+
+  var params = '';
+
+  if (page !== undefined) {
+    params += '&page=' + page;
+  }
+  if (keyword !== '') {
+    keyword = encodeURIComponent(keyword);
+    params += '&keyword=' + keyword;
+  }
+
+  if (params !== '') {
+    url += '?' + params.substring(1);
+  }
+
+  NProgress.start();
+  Turbolinks.visit(url);
+  NProgress.done();
+}
+
+
+function for_add_sql() {
+  NProgress.start();
+  var url = '/sql/for_add_sql.html';
+  $('#myModal').find('.modal-dialog').addClass('my-modal-dialog');
+  $('#myModal').find('.modal-title').text('{% trans "New SQL" %}');
+  $('#myModal').find('.modal-body').load(url, function(response, status, xhr) {
+    NProgress.done();
+    if (xhr.status === 200) {
+      $('#myModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+        // backdrop: true,
+        // keyboard: true,
+        show: true,
+      });
+      $('#focus').focus();
+    } else {
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    }
+  });
+}
+
+
+function get_sql(id) {
+  NProgress.start();
+  var url = '/sql/get_sql.html?id=' + id;
+  $('#myModal').find('.modal-dialog').removeClass('my-modal-dialog');
+  // $('#myModal').find('.modal-dialog').addClass('modal-lg');
+  $('#myModal').find('.modal-dialog').addClass('my-modal-dialog');
+  $('#myModal').find('.modal-title').text('{% trans "SQL Detail" %}');
+  $('#myModal').find('.modal-body').load(url, function(response, status, xhr) {
+    NProgress.done();
+    if (xhr.status === 200) {
+      $('#myModal').modal({
+        backdrop: true,
+        keyboard: true,
+        show: true,
+      });
+      $('#myModal').scrollTop(0);
+    } else {
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    }
+  });
+}
+
+
+function for_update_sql(id) {
+  NProgress.start();
+  var url = '/sql/for_update_sql.html?id=' + id;
+  $('#myModal').find('.modal-dialog').addClass('my-modal-dialog');
+  $('#myModal').find('.modal-title').text('{% trans "Edit SQL" %}');
+  $('#myModal').find('.modal-body').load(url, function(response, status, xhr) {
+    NProgress.done();
+    if (xhr.status === 200) {
+      $('#myModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+        // backdrop: true,
+        // keyboard: true,
+        show: true,
+      });
+      $('#myModal').scrollTop(0);
+    } else {
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    }
+  });
+}
+
+
+function delete_sql(id, subject) {
+  bootbox.confirm({
+    title: '{% trans "Delete SQL" %}',
+    message: '{% trans "Delete" %} "' + subject + '"?',
+    size: 'small',
+    animate: false,
+    backdrop: true,
+    buttons: {
+      cancel: {label: '{% trans "Cancel" %}'},
+      confirm: {label: '{% trans "Confirm" %}'},
+    },
+    callback: function (result) {
+      if (result) {
+        NProgress.start();
+        $.ajax({
+          url: '/sql/delete_sql',
+          type: 'GET',
+          data: {id: id},
+          success: function(data) {
+            NProgress.done();
+            Turbolinks.visit(window.location.toString());
+          },
+          error: function(xhr) {
+            NProgress.done();
+            toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+          },
+        });
+      } else {
+      }
+    },
+  });
+}
+
+
+function accept_sql(id, subject) {
+  bootbox.confirm({
+    title: '{% trans "Accept SQL" %}',
+    message: '{% trans "Accept" %} "' + subject + '"?',
+    size: 'small',
+    animate: false,
+    backdrop: true,
+    buttons: {
+      cancel: {label: '{% trans "Cancel" %}'},
+      confirm: {label: '{% trans "Confirm" %}'},
+    },
+    callback: function (result) {
+      if (result) {
+        NProgress.start();
+        $.ajax({
+          url: '/sql/accept_sql',
+          type: 'GET',
+          data: {id: id},
+          success: function(data) {
+            NProgress.done();
+            Turbolinks.visit(window.location.toString());
+          },
+          error: function(xhr) {
+            NProgress.done();
+            toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+          },
+        });
+      } else {
+      }
+    },
+  });
+}
+
+
+function for_reply_sql(id) {
+  NProgress.start();
+  var url = '/sql/for_reply_sql.html?id=' + id;
+  $('#myModal').find('.modal-dialog').addClass('my-modal-dialog');
+  $('#myModal').find('.modal-title').text('{% trans "Reply SQL" %}');
+  $('#myModal').find('.modal-body').load(url, function(response, status, xhr) {
+    NProgress.done();
+    if (xhr.status === 200) {
+      $('#myModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+        // backdrop: true,
+        // keyboard: true,
+        show: true,
+      });
+      $('#myModal').scrollTop(0);
+      setTimeout(function() {
+        $('#focus').focus();
+      }, 0);
+    } else {
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    }
+  });
+}
+
+
+function archive_sql(id, subject) {
+  bootbox.confirm({
+    title: '{% trans "Archive SQL" %}',
+    message: '{% trans "Archive" %} "' + subject + '"?',
+    size: 'small',
+    animate: false,
+    backdrop: true,
+    buttons: {
+      cancel: {label: '{% trans "Cancel" %}'},
+      confirm: {label: '{% trans "Confirm" %}'},
+    },
+    callback: function (result) {
+      if (result) {
+        NProgress.start();
+        $.ajax({
+          url: '/sql/archive_sql',
+          type: 'GET',
+          data: {id: id},
+          success: function(data) {
+            NProgress.done();
+            Turbolinks.visit(window.location.toString());
+          },
+          error: function(xhr) {
+            NProgress.done();
+            toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+          },
+        });
+      } else {
+      }
+    },
+  });
+}
+
+
+function star_sql(id) {
+  NProgress.start();
+  $.ajax({
+    url: '/sql/star_sql',
+    type: 'GET',
+    data: {id: id},
+    success: function(data) {
+      NProgress.done();
+      Turbolinks.visit(window.location.toString());
+    },
+    error: function(xhr) {
+      NProgress.done();
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    },
+  });
+}
+
+
+function unstar_sql(id) {
+  NProgress.start();
+  $.ajax({
+    url: '/sql/unstar_sql',
+    type: 'GET',
+    data: {id: id},
+    success: function(data) {
+      NProgress.done();
+      Turbolinks.visit(window.location.toString());
+    },
+    error: function(xhr) {
+      NProgress.done();
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    },
+  });
+}
+
+
+/*
+https://stackoverflow.com/questions/19305821/multiple-modals-overlay
+https://stackoverflow.com/questions/12286332/twitter-bootstrap-remote-modal-shows-same-content-every-time
+*/
+$(document).on('hidden.bs.modal', '.modal', function() {
+  $('.modal:visible').length && $(document.body).addClass('modal-open');
+  $(this).removeData('bs.modal');
+});
+
+
+$('[data-toggle="popover"]').popover({
+  // trigger: 'click hover',
+  trigger: 'hover',
+  html: true,
+  container: 'body'
+});
+</script>
+</body>
+</html>

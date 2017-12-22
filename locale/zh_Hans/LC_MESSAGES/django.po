@@ -1,0 +1,282 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-22 15:58+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: project/settings.py:163
+msgid "English"
+msgstr ""
+
+#: project/settings.py:164
+msgid "Simplified Chinese"
+msgstr ""
+
+#: templates/common/for_change_password.html:6
+msgid "Old Password"
+msgstr "旧密码"
+
+#: templates/common/for_change_password.html:10
+msgid "New Password"
+msgstr "新密码"
+
+#: templates/common/for_change_password.html:14
+#: templates/sql/for_add_sql.html:55 templates/sql/for_reply_sql.html:78
+#: templates/sql/for_update_sql.html:60
+msgid "Submit"
+msgstr "提交"
+
+#: templates/common/for_change_password.html:25
+msgid "Old password can not be null"
+msgstr "旧密码不能为空"
+
+#: templates/common/for_change_password.html:31
+msgid "New password can not be null"
+msgstr "新密码不能为空"
+
+#: templates/common/for_sign_in.html:43 templates/common/get_user_list.html:8
+msgid "Username"
+msgstr "用户名"
+
+#: templates/common/for_sign_in.html:47
+msgid "Password"
+msgstr "密码"
+
+#: templates/common/for_sign_in.html:51
+msgid "Sign in"
+msgstr "登录"
+
+#: templates/common/for_sign_in.html:62
+msgid "Username can not be null"
+msgstr "用户名不能为空"
+
+#: templates/common/for_sign_in.html:68
+msgid "Password can not be null"
+msgstr "密码不能为空"
+
+#: templates/common/get_user_list.html:9
+msgid "Real Name"
+msgstr "真实姓名"
+
+#: templates/common/get_user_list.html:10
+msgid "Email"
+msgstr "电子邮件"
+
+#: templates/common/header.html:49 templates/common/header.html:81
+msgid "Change Password"
+msgstr "修改密码"
+
+#: templates/common/header.html:50 templates/common/header.html:102
+msgid "Team Members"
+msgstr "团队成员"
+
+#: templates/common/header.html:53
+msgid "Sign Out"
+msgstr "退出"
+
+#: templates/sql/for_add_sql.html:6 templates/sql/for_reply_sql.html:13
+#: templates/sql/for_update_sql.html:7 templates/sql/get_sql.html:39
+msgid "Send To"
+msgstr "收件人"
+
+#: templates/sql/for_add_sql.html:12 templates/sql/for_reply_sql.html:19
+#: templates/sql/for_update_sql.html:13 templates/sql/get_sql.html:43
+msgid "Send Cc"
+msgstr "抄送"
+
+#: templates/sql/for_add_sql.html:18 templates/sql/for_reply_sql.html:25
+#: templates/sql/for_update_sql.html:19 templates/sql/get_sql.html:11
+#: templates/sql/get_sql_list.html:41
+msgid "Subject"
+msgstr "主题"
+
+#: templates/sql/for_add_sql.html:24 templates/sql/for_reply_sql.html:31
+#: templates/sql/for_update_sql.html:25 templates/sql/get_sql.html:23
+#: templates/sql/get_sql_list.html:43
+msgid "Database"
+msgstr "数据库"
+
+#: templates/sql/for_add_sql.html:36 templates/sql/for_reply_sql.html:43
+#: templates/sql/for_update_sql.html:37 templates/sql/get_sql.html:47
+msgid "Attachment"
+msgstr "附件"
+
+#: templates/sql/for_add_sql.html:43 templates/sql/for_reply_sql.html:61
+#: templates/sql/for_update_sql.html:48 templates/sql/get_sql.html:65
+msgid "Content"
+msgstr "内容"
+
+#: templates/sql/for_add_sql.html:45 templates/sql/for_update_sql.html:50
+msgid "Please mark how many rows will be affected"
+msgstr "请标注影响行数"
+
+#: templates/sql/for_add_sql.html:81 templates/sql/for_reply_sql.html:111
+#: templates/sql/for_update_sql.html:86
+msgid "Recipient can not be null"
+msgstr "收件人不能为空"
+
+#: templates/sql/for_add_sql.html:87 templates/sql/for_reply_sql.html:117
+#: templates/sql/for_update_sql.html:92
+msgid "Subject can not be null"
+msgstr "主题不能为空"
+
+#: templates/sql/for_add_sql.html:92 templates/sql/for_reply_sql.html:122
+#: templates/sql/for_update_sql.html:97
+msgid "Please select at least one database"
+msgstr "请选择至少一个数据库"
+
+#: templates/sql/for_add_sql.html:98 templates/sql/for_update_sql.html:103
+msgid "Content can not be null"
+msgstr "内容不能为空"
+
+#: templates/sql/for_reply_sql.html:69 templates/sql/get_sql.html:71
+#: templates/sql/get_sql_list.html:123 templates/sql/get_sql_list.html:125
+msgid "Reply"
+msgstr "回复"
+
+#: templates/sql/for_reply_sql.html:89 templates/sql/get_sql_list.html:292
+msgid "SQL Detail"
+msgstr "SQL详情"
+
+#: templates/sql/for_reply_sql.html:128
+msgid "Reply can not be null"
+msgstr "回复不能为空"
+
+#: templates/sql/get_sql.html:15 templates/sql/get_sql_list.html:42
+msgid "Creator"
+msgstr "创建者"
+
+#: templates/sql/get_sql.html:19
+msgid "Executor"
+msgstr "执行者"
+
+#: templates/sql/get_sql.html:27 templates/sql/get_sql_list.html:44
+msgid "Created At"
+msgstr "创建时间"
+
+#: templates/sql/get_sql.html:31
+msgid "Updated At"
+msgstr "更新时间"
+
+#: templates/sql/get_sql.html:35 templates/sql/get_sql_list.html:45
+msgid "Finished At"
+msgstr "执行时间"
+
+#: templates/sql/get_sql.html:90
+msgid "Attachment Detail"
+msgstr "附件详情"
+
+#: templates/sql/get_sql_list.html:21 templates/sql/get_sql_list.html:267
+msgid "New SQL"
+msgstr "新增SQL"
+
+#: templates/sql/get_sql_list.html:40
+msgid "Flag"
+msgstr "标记"
+
+#: templates/sql/get_sql_list.html:46
+msgid "Status"
+msgstr "状态"
+
+#: templates/sql/get_sql_list.html:47
+msgid "Operation"
+msgstr "操作"
+
+#: templates/sql/get_sql_list.html:91
+msgid "Created"
+msgstr "已创建"
+
+#: templates/sql/get_sql_list.html:93
+msgid "Delivered"
+msgstr "已投递"
+
+#: templates/sql/get_sql_list.html:95
+msgid "Updated"
+msgstr "已更新"
+
+#: templates/sql/get_sql_list.html:97
+msgid "Excuting"
+msgstr "执行中"
+
+#: templates/sql/get_sql_list.html:99
+msgid "Finished"
+msgstr "已执行"
+
+#: templates/sql/get_sql_list.html:101
+msgid "Archived"
+msgstr "已归档"
+
+#: templates/sql/get_sql_list.html:103
+msgid "Deleted"
+msgstr "已删除"
+
+#: templates/sql/get_sql_list.html:107
+msgid "Show"
+msgstr "查看"
+
+#: templates/sql/get_sql_list.html:110 templates/sql/get_sql_list.html:112
+msgid "Edit"
+msgstr "编辑"
+
+#: templates/sql/get_sql_list.html:117 templates/sql/get_sql_list.html:119
+#: templates/sql/get_sql_list.html:369
+msgid "Accept"
+msgstr "接收"
+
+#: templates/sql/get_sql_list.html:130
+msgid "More"
+msgstr "更多"
+
+#: templates/sql/get_sql_list.html:134 templates/sql/get_sql_list.html:136
+#: templates/sql/get_sql_list.html:335
+msgid "Delete"
+msgstr "删除"
+
+#: templates/sql/get_sql_list.html:139 templates/sql/get_sql_list.html:141
+#: templates/sql/get_sql_list.html:429
+msgid "Archive"
+msgstr "归档"
+
+#: templates/sql/get_sql_list.html:313
+msgid "Edit SQL"
+msgstr "编辑SQL"
+
+#: templates/sql/get_sql_list.html:334
+msgid "Delete SQL"
+msgstr "删除SQL"
+
+#: templates/sql/get_sql_list.html:340 templates/sql/get_sql_list.html:374
+#: templates/sql/get_sql_list.html:434
+msgid "Cancel"
+msgstr "取消"
+
+#: templates/sql/get_sql_list.html:341 templates/sql/get_sql_list.html:375
+#: templates/sql/get_sql_list.html:435
+msgid "Confirm"
+msgstr "确认"
+
+#: templates/sql/get_sql_list.html:368
+msgid "Accept SQL"
+msgstr "接收SQL"
+
+#: templates/sql/get_sql_list.html:404
+msgid "Reply SQL"
+msgstr "回复SQL"
+
+#: templates/sql/get_sql_list.html:428
+msgid "Archive SQL"
+msgstr "归档SQL"

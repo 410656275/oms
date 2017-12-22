@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<div class="container-fluid">
+  <div class="table-responsive">
+    <table class="table table-bordered table-condensed" style="margin-bottom: 0;">
+      <thead>
+        <tr>
+          <th>{% trans "Username" %}</th>
+          <th>{% trans "Real Name" %}</th>
+          <th>{% trans "Email" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.real_name }}</td>
+          <td>{{ user.email }}</td>
+        </tr>
+        {% if user.ssh_key != 'N/A' %}
+        <tr>
+          <td colspan="4"><textarea class="form-control" readonly>{{ user.ssh_key }}</textarea></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

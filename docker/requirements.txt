@@ -1,0 +1,14 @@
+Django==1.11.3
+django-htmlmin
+
+mysqlclient
+
+celery
+
+redis
+
+chardet
+
+simplejson
+
+uWSGI

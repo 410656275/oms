@@ -1,0 +1,105 @@
+{% load i18n %}
+
+<div class="container-fluid">
+  <div class="table-responsive">
+    <table class="table table-bordered table-condensed" style="margin-bottom: 0;">
+      <tr>
+        <td>ID</td>
+        <td>{{ sql.id }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Subject" %}</td>
+        <td>{{ sql.subject }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Creator" %}</td>
+        <td>{{ sql.creator_name }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Executor" %}</td>
+        <td>{{ sql.executor_name }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Database" %}</td>
+        <td>{{ sql.databases|default:'' }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Created At" %}</td>
+        <td>{{ sql.created_at }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Updated At" %}</td>
+        <td>{{ sql.updated_at }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Finished At" %}</td>
+        <td>{{ sql.finished_at|default:'' }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Send To" %}</td>
+        <td>{{ sql.recipient_to }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Send Cc" %}</td>
+        <td>{{ sql.recipient_cc }}</td>
+      </tr>
+      <tr>
+        <td>{% trans "Attachment" %}</td>
+        <td>
+          {% for attachment in sql.attachments %}
+          <div class="btn-group btn-group-xs" role="group" style="margin: 1px 0;">
+            <a href="/static/{{ attachment.file_path }}" target="_blank" class="btn btn-xs btn-default" role="button" style="color: #337AB7;">
+              {{ attachment.file_name }}
+            </a>
+            {% if attachment.is_sql_file %}
+            <a href="javascript:;" onclick="get_sql_attachment({{ attachment.id }});" class="btn btn-xs btn-info" role="button">
+              <span class="glyphicon glyphicon-search"></span>
+            </a>
+            {% endif %}
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border-bottom-color: #B2CECF;">{% trans "Content" %}</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border-color: #B2CECF;">{{ sql.content|safe }}</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border-bottom-color: #B2CECF;">{% trans "Reply" %}</td>
+      </tr>
+      <tr>
+        {% if sql.reply|default:'' != '' %}
+        <td colspan="2" style="border-color: #B2CECF;">{{ sql.reply|default:''|safe }}</td>
+        {% else %}
+        <td colspan="2" style="border-color: #B2CECF;">&nbsp;</td>
+        {% endif %}
+      </tr>
+    </table>
+  </div>
+</div>
+
+<script>
+/* https://stackoverflow.com/questions/18432394/how-to-make-twitter-bootstrap-modal-full-screen */
+function get_sql_attachment(id) {
+  NProgress.start();
+  var url = '/sql/get_sql_attachment.html?id=' + id;
+  $('#myModal2').find('.modal-dialog').addClass('my-modal-dialog');
+  $('#myModal2').find('.modal-title').text('{% trans "Attachment Detail" %}');
+  $('#myModal2').find('.modal-body').load(url, function(response, status, xhr) {
+    NProgress.done();
+    if (xhr.status === 200) {
+      $('#myModal2').modal({
+        backdrop: true,
+        keyboard: true,
+        show: true,
+      });
+      $('#myModal2').scrollTop(0);
+    } else {
+      toastr.error('Error: ' + xhr.status, null, {timeOut: 3000});
+    }
+  });
+}
+</script>
